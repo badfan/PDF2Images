@@ -1,0 +1,25 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./rpc";
+
+// protoc --go_out=./rpc/ --go-grpc_out=./rpc/ ./proto/images.proto
+
+message ConvertPDF2ImagesRequest {
+  oneof data {
+    Metadata meta = 1;
+    bytes chunk = 2;
+  }
+}
+
+message Metadata {
+  string container_name = 1;
+  string blob_folder_path = 2;
+  string file_name = 3;
+}
+
+message EmptyResponse {}
+
+service PDF2ImagesService {
+  rpc ConvertPDF2Images(stream ConvertPDF2ImagesRequest) returns (EmptyResponse) {}
+}
